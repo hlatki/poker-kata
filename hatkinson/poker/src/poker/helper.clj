@@ -31,18 +31,32 @@
   (filter #(= (second %) n)
           (frequencies hand-values)))
 
-(defn four-of-a-kind
+(defn four-of-a-kind?
   "Return true if a hand has four of a kind"
   [hand-values]
   (not (empty? (n-of-a-kind 4 hand-values))))
 
-(defn three-of-a-kind
+(defn three-of-a-kind?
   "Return true if a hand has three of a kind"
   [hand-values]
   (not (empty? (n-of-a-kind 3 hand-values))))
+
+;; ### Pairs
 
 (defn pairs
   "Return frequencies of pairs in a hand (e.g. with hand [5,5,7,7,2] you would get
   back ([5 2] [7 2])"
   [hand-values]
   (n-of-a-kind 2 hand-values))
+
+(defn two-pair?
+  "Return true if the hand has two pairs"
+  [hand-values]
+  (= (count (pairs hand-values)) 2))
+
+
+
+
+
+
+
