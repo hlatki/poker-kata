@@ -30,3 +30,12 @@
   (testing "Testing four-of-a-kind")
   (four-of-a-kind [7 2 2 2 2])
   (not (four-of-a-kind [7 5 2 1 2])))
+
+(deftest test-three-of-a-kind
+  (testing "Testing three-of-a-kind")
+  (three-of-a-kind [7 2 2 8 2])
+  (not (three-of-a-kind [7 5 2 1 2])))
+
+(deftest test-pairs
+  (testing "Testing pairs")
+  (is (pairs [5,5,7,7,2]) '([5 2],[7,2])))
