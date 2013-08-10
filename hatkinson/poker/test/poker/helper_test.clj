@@ -39,3 +39,9 @@
 (deftest test-pairs
   (testing "Testing pairs")
   (is (pairs [5,5,7,7,2]) '([5 2],[7,2])))
+
+(deftest test-two-pair
+  (testing "Testing two-pairs")
+  (two-pair? [5 5 7 7 1])
+  (not (two-pair? [5 5 7 7 1 1]))
+  ((two-pair? [5 6 7 7 1])))
