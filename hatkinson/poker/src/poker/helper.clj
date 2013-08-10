@@ -26,3 +26,7 @@
   (filter #(= (second %) n)
           (frequencies hand-values)))
 
+(defn four-of-a-kind
+  "Return true if a hand has four of a kind"
+  [hand-values]
+  (not (empty? (n-of-a-kind 4 hand-values))))
