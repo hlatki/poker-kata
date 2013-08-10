@@ -16,3 +16,13 @@
        [curr (and (second prev-vec) false)]))
     [(dec (first hand-vals)) true]
     hand-vals)))
+
+
+(defn n-of-a-kind
+  "Return frequencies matching n (e.g. if you had a hand with values
+  [5,5,6,8,4] and you were looking for pairs you would call (n-of-a-kind 2 [5,5,6,8,4])
+  and would get [5 2] -- that is, there were two fives)"
+  [n hand-values]
+  (filter #(= (second %) n)
+          (frequencies hand-values)))
+
