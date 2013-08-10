@@ -3,8 +3,9 @@
 (ns poker.helper)
 
 (defn consecutive?
-  "Return true if a sequence of numbers is consecutive.
-  The sequence may be unsorted."
+  "Return true if a (sorted, ascending) sequence of numbers is consecutive.
+  Note that this will only work for positive numbers (since there are no positive
+  numbers in poker)."
   [hand-vals]
   (second (reduce
    (fn [prev-vec curr]
@@ -14,4 +15,4 @@
        [curr (and (second prev-vec) true)]
        [curr (and (second prev-vec) false)]))
     [(dec (first hand-vals)) true]
-    (into (sorted-set) hand-vals))))
+    hand-vals)))
