@@ -2,6 +2,7 @@
 
 (ns poker.helper)
 
+;; ## Misc. functions
 (defn consecutive?
   "Return true if a (sorted, ascending) sequence of numbers is consecutive.
   Note that this will only work for positive numbers (since there are no positive
@@ -17,6 +18,10 @@
     [(dec (first hand-vals)) true]
     hand-vals)))
 
+
+;; ## Of a Kind functions
+;; These functions deal with finding pairs and seeing if a hand has
+;; four of a kind etc.
 
 (defn n-of-a-kind
   "Return frequencies matching n (e.g. if you had a hand with values
