@@ -18,6 +18,12 @@
   (not (consecutive? [5 7 3 4 1]))
   (not (consecutive? [-5 -2 -3 -4 -9])))
 
+;; ## Tests for all-same-suit
+(deftest test-all-same-suit
+  (testing "Testing all same suit")
+  (all-same-suit? ["C" "C" "C" "C" "C"])
+  (not (all-same-suit? ["C" "C" "D" "C" "C"])))
+
 
 ;; ## Tests for n-of-a-kind
 (deftest test-two-n-of-a-kind
