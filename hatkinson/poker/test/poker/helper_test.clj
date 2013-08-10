@@ -28,13 +28,13 @@
 
 (deftest test-four-of-a-kind
   (testing "Testing four-of-a-kind")
-  (four-of-a-kind [7 2 2 2 2])
-  (not (four-of-a-kind [7 5 2 1 2])))
+  (four-of-a-kind? [7 2 2 2 2])
+  (not (four-of-a-kind? [7 5 2 1 2])))
 
 (deftest test-three-of-a-kind
   (testing "Testing three-of-a-kind")
-  (three-of-a-kind [7 2 2 8 2])
-  (not (three-of-a-kind [7 5 2 1 2])))
+  (three-of-a-kind? [7 2 2 8 2])
+  (not (three-of-a-kind? [7 5 2 1 2])))
 
 (deftest test-pairs
   (testing "Testing pairs")
@@ -44,4 +44,4 @@
   (testing "Testing two-pairs")
   (two-pair? [5 5 7 7 1])
   (not (two-pair? [5 5 7 7 1 1]))
-  ((two-pair? [5 6 7 7 1])))
+  (two-pair? [5 6 7 7 1]))
