@@ -25,3 +25,8 @@
   (is (n-of-a-kind 2 [5,5,6,8,4]) [5 2])
   (is (n-of-a-kind 2 [5,5,6,4,4]) [4 2 5 2])
   (empty? (n-of-a-kind 2 [5,9,6,1,4])))
+
+(deftest test-four-of-a-kind
+  (testing "Testing four-of-a-kind")
+  (four-of-a-kind [7 2 2 2 2])
+  (not (four-of-a-kind [7 5 2 1 2])))
