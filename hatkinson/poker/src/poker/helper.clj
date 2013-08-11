@@ -55,10 +55,16 @@
   [hand-values]
   (n-of-a-kind 2 hand-values))
 
+(defn pair?
+  "Return true if there is at least one pair"
+  [hand-values]
+  (not (empty? (pairs hand-values))))
+
 (defn two-pair?
   "Return true if the hand has two pairs"
   [hand-values]
   (= (count (pairs hand-values)) 2))
+
 
 
 
