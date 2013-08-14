@@ -21,6 +21,8 @@
    :suits (map #(second %) hand)})
 
 
+;; make this return rank and the frequency vector
+;; sort values with > rather than default
 (defn rank-hand
   "Naive evalator"
   [h]
@@ -45,11 +47,6 @@
 (rank-hand w)
 
 
-(defn hand-calculator
-  "Formula for calculating the value of a hand"
-  [base dupe-multplier rest-multiplier hand-frequencies]
-  ;;
-  ;; if frequency of val == 1 then mult by rest-multiplier,
-  ;; otherwise val * frequency * dupe-multiplier
-  )
-
+;; compare rank -- if tie, do this to each hand frequency so that we can
+;; just run compare on the two resulting vectors:
+;; (map first (sort-by second > frequencies-of-sorted-hand))
