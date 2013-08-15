@@ -2,13 +2,13 @@
   (:require [clojure.test :refer :all]
             [poker.core :refer :all]))
 
+
 (defn get-rank
   "helper function to get rank of hand, given hand as string"
   [hand-string]
-  (first (rank-hand (clojure.string/split hand-string #" "))))
+  (first (rank-hand hand-string)))
 
-
-(deftest a-test
+(deftest test-rank-hand
   (testing "Test that hands are classified correctly"
     (is (get-rank "TS JS QS KS AS") STRAIGHT_FLUSH)
     (is (get-rank "2D 2S 2H 2C KH") FOUR_OF_A_KIND)
