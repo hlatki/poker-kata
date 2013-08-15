@@ -28,4 +28,4 @@
   (testing "Test that hands are compared correctly"
     (is (compare-hands "TS JS QS KS AS" "3H AC 3D AS KD") "White wins")
     (is (compare-hands "3H AC 3D AS KD" "TS JS QS KS AS") "Black wins")
-    (is (compare-hands "2H 2S 2C AH AD" "3S 3H 3D 4D 4S") "Black wins")))  
+    (is (compare-hands "2H 2S 2C AH AD" "3S 3H 3D 4D 4S") "Black wins")))
