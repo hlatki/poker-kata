@@ -28,17 +28,18 @@
   [h]
   (let [hand   (parse-a-hand h)
         suits  (:suits hand)
-        values (:values hand)]
+        values (:values hand)
+        freq   (frequencies values)]
     (cond
-      (and (all-same-suit? suits) (consecutive? values)) :straight-flush
-      (four-of-a-kind? values)                          :four-of-a-kind
-      (and (three-of-a-kind? values) (pair? values))    :full-house
-      (all-same-suit? suits)                            :flush
-      (consecutive? values)                             :straight
-      (three-of-a-kind? values)                         :three-of-a-kind
-      (two-pair? values)                                :two-pair
-      (pair? values)                                    :pair
-      :else                                             :high-card)))
+      (and (all-same-suit? suits) (consecutive? values))[:straight-flush freq]
+      (four-of-a-kind? values)                          [:four-of-a-kind freq]
+      (and (three-of-a-kind? values) (pair? values))    [:full-house freq]
+      (all-same-suit? suits)                            [:flush freq]
+      (consecutive? values)                             [:straight freq]
+      (three-of-a-kind? values)                         [:three-of-a-kind freq]
+      (two-pair? values)                                [:two-pair freq]
+      (pair? values)                                    [:pair freq]
+      :else                                             [:high-card freq])))
 (def sf ["TS" "JS" "QS" "KS" "AS"])
 (def f ["2S" "8S" "AS" "QS" "AS"])
 (def w ["2H" "8S" "6S" "QS" "AS"])
