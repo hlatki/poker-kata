@@ -18,17 +18,13 @@
 (defn parse-a-hand
   "Take a hand and return a hash containing two seqs.
   One will contain the (sorted, descending) values, the other will hold the suits.
-  This assumes that the input is a sequence of strings, like this:
-  [2H 3D 5S 9C KD] (but with double quotes around each item).
-  Also, it will replace the T,J,Q,K,A with a numeric value.
-
-  The values will be sorted in ascending order, so they will be stored
-  in a vector since lookup is faster from the end -- not that this matters
-  when there's only five values though.
-  "
-  [hand]
-  {:values (into (vector) (sort > (map #(value-lookup (first %)) hand)))
-   :suits (map #(second %) hand)})
+  This assumes that the input is a string containg with the cards deliminated 
+  by spaces.
+  Also, it will replace the T,J,Q,K,A with a numeric value."
+  [hand-string]
+  (let [hand (clojure.string/split hand-string #" ")]
+    {:values (into (vector) (sort > (map #(value-lookup (first %)) hand)))
+    :suits (map #(second %) hand)}))
 
 
 ;; make this return rank and the frequency vector
