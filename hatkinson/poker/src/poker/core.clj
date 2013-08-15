@@ -73,5 +73,5 @@
                   (tie-breaker-freq (second black)))))
       (decider winner))))
 
-;;(compare-hands "3S 3H 3D 4D 4S" "2H 2S 2C AH AD")
+
 
