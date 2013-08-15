@@ -16,7 +16,7 @@
 (def HIGH_CARD 0)
 
 (defn parse-a-hand
-  "Take a hand and return a hash containing two seqs.
+  "Take a hand and return a vector containing two seqs.
   One will contain the (sorted, descending) values, the other will hold the suits.
   This assumes that the input is a string containg with the cards deliminated
   by spaces.
@@ -29,7 +29,7 @@
 
 
 (defn rank-hand
-  "Naive evalator. Returns a vector containg the rank and the frequency of
+  "Naive evaluator. Returns a vector containg the rank and the frequency of
   the values"
   [h]
   (let [hand   (parse-a-hand h)
@@ -49,7 +49,7 @@
 
 (defn tie-breaker-freq
   "Used to break ties. Sorts the value by number of repititions. i.e., if you
-  had 3 eights and two fives, the output would be [8 5]. Since both hands are of the
+  had 3 fives and 2 eights, the output would be [5 8]. Since both hands are of the
   same rank we can just compare the two vectors to break ties."
   [hand-freq]
   (map first (sort-by second > hand-freq)))
@@ -57,8 +57,7 @@
 
 
 (defn compare-hands
-  "Compare two hands and return the winner.  It could get stuck in an infite loop if the
-  two hands are exactly the same, so that should probably get fixed."
+  "Compare two hands and return the winner."
   [white-hand black-hand]
   (let [white   (rank-hand white-hand)
         black   (rank-hand black-hand)
