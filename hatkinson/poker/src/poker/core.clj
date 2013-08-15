@@ -30,30 +30,44 @@
 ;; make this return rank and the frequency vector
 ;; sort values with > rather than default
 (defn rank-hand
-  "Naive evalator"
+  "Naive evalator. Returns a vector containg the rank and the frequency of 
+  the values"
   [h]
   (let [hand   (parse-a-hand h)
         suits  (:suits hand)
         values (:values hand)
         freq   (frequencies values)]
     (cond
-      (and (all-same-suit? suits) (consecutive? values))[:straight-flush freq]
-      (four-of-a-kind? values)                          [:four-of-a-kind freq]
-      (and (three-of-a-kind? values) (pair? values))    [:full-house freq]
-      (all-same-suit? suits)                            [:flush freq]
-      (consecutive? values)                             [:straight freq]
-      (three-of-a-kind? values)                         [:three-of-a-kind freq]
-      (two-pair? values)                                [:two-pair freq]
-      (pair? values)                                    [:pair freq]
-      :else                                             [:high-card freq])))
-(def sf ["TS" "JS" "QS" "KS" "AS"])
-(def f ["2S" "8S" "AS" "QS" "AS"])
-(def w ["2H" "8S" "6S" "QS" "AS"])
-(rank-hand sf)
-(rank-hand f)
-(rank-hand w)
+      (and (all-same-suit? suits) (consecutive? values))[STRAIGHT_FLUSH freq]
+      (four-of-a-kind? values)                          [FOUR_OF_A_KIND freq]
+      (and (three-of-a-kind? values) (pair? values))    [FULL_HOUSE freq]
+      (all-same-suit? suits)                            [FLUSH freq]
+      (consecutive? values)                             [STRAIGHT freq]
+      (three-of-a-kind? values)                         [THREE_OF_A_KIND freq]
+      (two-pair? values)                                [TWO_PAIR freq]
+      (pair? values)                                    [PAIR freq]
+      :else                                             [HIGH_CARD freq])))
+
+(defn tie-breaker-freq
+  "Used to break ties. Sorts the value by number of repititions. i.e., if you
+  had 3 eights and two fives, the output would be [8 5]. Since both hands are of the 
+  same rank we can just compare the two vectors to break ties."
+  [hand-freq]
+  (map first (sort-by second > hand-freq)))
 
 
-;; compare rank -- if tie, do this to each hand frequency so that we can
-;; just run compare on the two resulting vectors:
-;; (map first (sort-by second > frequencies-of-sorted-hand))
+
+(defn compare-hands
+  "Compare two hands and return the winner.  It could get stuck in an infite loop if the 
+  two hands are exactly the same, so that should probably get fixed."
+  [white-hand black-hand]
+  (let [white   (rank-hand white-hand)
+        black   (rank-hand black-hand)
+        winner  (compare (first white) (first black))
+        decider {-1 "Black wins" 0 "a tie?!" 1 "White wins"}] 
+    (if (= winner 0)
+      (decider (compare (tie-breaker-freq (second white)) (tie-breaker-freq (second black))))
+      (decider winner))))
+
+
+
