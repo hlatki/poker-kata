@@ -12,10 +12,10 @@
    (fn [prev-vec curr]
      ;; prev-vec: [previous-num is-consecutive]
      ;; is-consecutive is false when it hits a nonconsecutive pairing
-     (if (= (inc (first prev-vec)) curr)
+     (if (= (dec (first prev-vec)) curr)
        [curr (and (second prev-vec) true)]
        [curr (and (second prev-vec) false)]))
-    [(dec (first hand-vals)) true]
+    [(inc (first hand-vals)) true]
     hand-vals)))
 
 (defn all-same-suit?

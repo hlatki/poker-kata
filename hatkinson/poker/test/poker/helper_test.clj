@@ -5,10 +5,10 @@
 ;; ## Tests for consecutive? function
 (deftest test-sorted-consecutive
   (testing "Testing sorted consecutive sequences")
-  (consecutive? [1 2 3 4 5 6])
-  (consecutive? [0 2 3 4 5 6])
-  (consecutive? #{1 2 3 4 5 6})
-  (consecutive? '(1 2 3 4 5 6)))
+  (consecutive? (sort > [1 2 3 4 5 6]))
+  (consecutive? (sort > [1 2 3 4 5 6]))
+  (consecutive? #{7 6 5 4 3})
+  (consecutive? '(8 7 6 5 4 3 2 1 0)))
 (deftest test-unsorted-consecutive
   (testing "Testing unsorted sequences that are consecutive")
   (consecutive? (into (sorted-set) [1 4 2 3 5]))
