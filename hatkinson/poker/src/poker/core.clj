@@ -5,6 +5,16 @@
 (def value-lookup {\1 1 \2 2 \3 3 \4 4 \5 5 \6 6 \7 7 \8 8 \9 9
                \T 10 \J 11 \Q 12 \K 13 \A 14})
 
+(def STRAIGHT_FLUSH 8)
+(def FOUR_OF_A_KIND 7)
+(def FULL_HOUSE 6)
+(def FLUSH 5)
+(def STRAIGHT 4)
+(def THREE_OF_A_KIND 3)
+(def TWO_PAIR 2)
+(def PAIR 1)
+(def HIGH_CARD 0)     
+
 (defn parse-a-hand
   "Take a hand and return a hash containing two seqs.
   One will contain the (sorted, descending) values, the other will hold the suits.
