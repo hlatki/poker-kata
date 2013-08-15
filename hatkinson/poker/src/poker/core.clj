@@ -27,8 +27,7 @@
     :suits (map #(second %) hand)}))
 
 
-;; make this return rank and the frequency vector
-;; sort values with > rather than default
+
 (defn rank-hand
   "Naive evalator. Returns a vector containg the rank and the frequency of
   the values"
