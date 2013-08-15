@@ -7,7 +7,7 @@
 
 (defn parse-a-hand
   "Take a hand and return a hash containing two seqs.
-  One will contain the (sorted) values, the other will hold the suits.
+  One will contain the (sorted, descending) values, the other will hold the suits.
   This assumes that the input is a sequence of strings, like this:
   [2H 3D 5S 9C KD] (but with double quotes around each item).
   Also, it will replace the T,J,Q,K,A with a numeric value.
@@ -17,7 +17,7 @@
   when there's only five values though.
   "
   [hand]
-  {:values (into (vector) (sort (map #(value-lookup (first %)) hand)))
+  {:values (into (vector) (sort > (map #(value-lookup (first %)) hand)))
    :suits (map #(second %) hand)})
 
 
