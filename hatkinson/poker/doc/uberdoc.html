@@ -3031,7 +3031,14 @@ net.brehaut.ClojureTools = (function (SH) {
 </script><title>poker -- Marginalia</title></head><body><table><tr><td class="docs"><div class="header"><h1 class="project-name">poker</h1><h2 class="project-version">0.1.0-SNAPSHOT</h2><br /><p>My solution for the poker hand evaluation kata. It takes two hands and determines the winner.</p>
 </div><div class="dependencies"><h3>dependencies</h3><table><tr><td class="dep-name">org.clojure/clojure</td><td class="dotted"><hr /></td><td class="dep-version">1.5.1</td></tr></table></div></td><td class="codes" style="text-align: center; vertical-align: middle;color: #666;padding-right:20px"><br /><br /><br />(this space intentionally left almost blank)</td></tr><tr><td class="docs"><div class="toc"><a name="toc"><h3>namespaces</h3></a><ul><li><a href="#poker.core">poker.core</a></li><li><a href="#poker.helper">poker.helper</a></li></ul></div></td><td class="codes">&nbsp;</td></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#poker.core" name="poker.core"><h1 class="project-name">poker.core</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns poker.core
-  (:require [poker.helper :refer :all]))</pre></td></tr><tr><td class="docs"><p>Replace chars with value -- Ace is always high?  Check on this</p>
+  (:require [poker.helper :refer :all]))</pre></td></tr><tr><td class="docs"><p>These functions are the core poker hand comparison and ranking functions. 
+If you want to comapre two hands, call (compare-hands white black), where
+white and black are each strings representing a particular hands.</p>
+
+<p>In each hand, each card is represented by two characters: the first is the
+value of the card, and the second is its suit. The cards are deliminated by
+spaces.  </p>
+</td><td class="codes"></td></tr><tr><td class="docs"><p>Replace chars with value -- Ace is always high?  Check on this</p>
 </td><td class="codes"><pre class="brush: clojure">(def value-lookup {\1 1 \2 2 \3 3 \4 4 \5 5 \6 6 \7 7 \8 8 \9 9
                \T 10 \J 11 \Q 12 \K 13 \A 14})</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(def STRAIGHT_FLUSH 8)
@@ -3044,14 +3051,14 @@ net.brehaut.ClojureTools = (function (SH) {
 (def PAIR 1)
 (def HIGH_CARD 0)</pre></td></tr><tr><td class="docs"><p>Take a hand and return a vector containing two seqs.
   One will contain the (sorted, descending) values, the other will hold the suits.
-  This assumes that the input is a string containg with the cards deliminated
-  by spaces.
+  This assumes that the input is a string containing the cards (deliminated
+  by spaces).
   Also, it will replace the T,J,Q,K,A with a numeric value.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn parse-a-hand
   [hand-string]
   (let [hand (clojure.string/split hand-string #&quot; &quot;)]
     {:values (into (vector) (sort &gt; (map #(value-lookup (first %)) hand)))
-    :suits (map #(second %) hand)}))</pre></td></tr><tr><td class="docs"><p>Naive evaluator. Returns a vector containg the rank and the frequency of
+    :suits (map #(second %) hand)}))</pre></td></tr><tr><td class="docs"><p>Naive evaluator. Returns a vector containing the rank and the frequency of
   the values</p>
 </td><td class="codes"><pre class="brush: clojure">(defn rank-hand
   [h]
@@ -3061,19 +3068,21 @@ net.brehaut.ClojureTools = (function (SH) {
         freq   (frequencies values)]
     (cond
       (and (all-same-suit? suits) (consecutive? values))[STRAIGHT_FLUSH freq]
-      (four-of-a-kind? values)                          [FOUR_OF_A_KIND freq]
-      (and (three-of-a-kind? values) (pair? values))    [FULL_HOUSE freq]
+      (four-of-a-kind? freq)                            [FOUR_OF_A_KIND freq]
+      (and (three-of-a-kind? freq) (pair? freq))        [FULL_HOUSE freq]
       (all-same-suit? suits)                            [FLUSH freq]
       (consecutive? values)                             [STRAIGHT freq]
-      (three-of-a-kind? values)                         [THREE_OF_A_KIND freq]
-      (two-pair? values)                                [TWO_PAIR freq]
-      (pair? values)                                    [PAIR freq]
+      (three-of-a-kind? freq)                           [THREE_OF_A_KIND freq]
+      (two-pair? freq)                                  [TWO_PAIR freq]
+      (pair? freq)                                      [PAIR freq]
       :else                                             [HIGH_CARD freq])))</pre></td></tr><tr><td class="docs"><p>Used to break ties. Sorts the value by number of repititions. i.e., if you
   had 3 fives and 2 eights, the output would be [5 8]. Since both hands are of the
   same rank we can just compare the two vectors to break ties.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn tie-breaker-freq
   [hand-freq]
-  (map first (sort-by second &gt; hand-freq)))</pre></td></tr><tr><td class="docs"><p>Compare two hands and return the winner.  This is the 'main' function.</p>
+  (map first (sort-by second &gt; hand-freq)))</pre></td></tr><tr><td class="docs"><p>Compare two hands and return the winner. This is the only function 
+  you would need to call in order to compare two hands. It takes two hands,
+  each as a string.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn compare-hands
   [white-hand black-hand]
   (let [white   (rank-hand white-hand)
@@ -3090,8 +3099,7 @@ net.brehaut.ClojureTools = (function (SH) {
 </td><td class="codes"><pre class="brush: clojure">(ns poker.helper)</pre></td></tr><tr><td class="docs"><p>Helper functions for poker hand evaluation and comparison</p>
 </td><td class="codes"></td></tr><tr><td class="docs"><h2>Misc. functions</h2>
 </td><td class="codes"></td></tr><tr><td class="docs"><p>Return true if a (sorted, descending) sequence of numbers is consecutive.
-  Note that this will only work for positive numbers (since there are no positive
-  numbers in poker).</p>
+  Note that this will only work for non-negative numbers.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn consecutive?
   [hand-vals]
   (second
@@ -3110,29 +3118,33 @@ net.brehaut.ClojureTools = (function (SH) {
   (apply = hand-suits))</pre></td></tr><tr><td class="docs"><h2>Of a Kind functions</h2>
 
 <p>These functions deal with finding pairs and seeing if a hand has
-four of a kind etc.</p>
-</td><td class="codes"></td></tr><tr><td class="docs"><p>Return frequencies matching n (e.g. if you had a hand with values
-  [5,5,6,8,4] and you were looking for pairs you would call (n-of-a-kind 2 [5,5,6,8,4])
+four of a kind etc. Since the rank-hand function already calculates 
+the frequencies for a hand, these functions all take that as their input
+instead of recalculating it. </p>
+</td><td class="codes"></td></tr><tr><td class="docs"><p>Return frequencies matching n given the frequencies of a hand 
+  (e.g. if you had a hand with values
+  [5,5,6,8,4] and you were looking for pairs you would call 
+  (n-of-a-kind 2 [[5 2] [6 1] [8 1] [4 1]])
   and would get [5 2] -- that is, there were two fives)</p>
 </td><td class="codes"><pre class="brush: clojure">(defn n-of-a-kind
-  [n hand-values]
-  (filter #(= (second %) n)
-          (frequencies hand-values)))</pre></td></tr><tr><td class="docs"><p>Return true if a hand has four of a kind</p>
+  [n hand-freqs]
+  (filter #(= (second %) n) hand-freqs))</pre></td></tr><tr><td class="docs"><p>Return true if a hand has four of a kind</p>
 </td><td class="codes"><pre class="brush: clojure">(defn four-of-a-kind?
-  [hand-values]
-  (not (empty? (n-of-a-kind 4 hand-values))))</pre></td></tr><tr><td class="docs"><p>Return true if a hand has three of a kind</p>
+  [hand-freqs]
+  (not (empty? (n-of-a-kind 4 hand-freqs))))</pre></td></tr><tr><td class="docs"><p>Return true if a hand has three of a kind</p>
 </td><td class="codes"><pre class="brush: clojure">(defn three-of-a-kind?
-  [hand-values]
-  (not (empty? (n-of-a-kind 3 hand-values))))</pre></td></tr><tr><td class="docs"><h3>Pairs</h3>
-</td><td class="codes"></td></tr><tr><td class="docs"><p>Return frequencies of pairs in a hand (e.g. with hand [5,5,7,7,2] you would get
+  [hand-freqs]
+  (not (empty? (n-of-a-kind 3 hand-freqs))))</pre></td></tr><tr><td class="docs"><h3>Pairs</h3>
+</td><td class="codes"></td></tr><tr><td class="docs"><p>Return frequencies of pairs in a hand frequency 
+  (e.g. with hand [5,5,7,7,2] and hand-freq of [[5 2] [7 2] [2 1] ]you would get
   back ([5 2] [7 2])</p>
 </td><td class="codes"><pre class="brush: clojure">(defn pairs
-  [hand-values]
-  (n-of-a-kind 2 hand-values))</pre></td></tr><tr><td class="docs"><p>Return true if there is at least one pair</p>
+  [hand-freqs]
+  (n-of-a-kind 2 hand-freqs))</pre></td></tr><tr><td class="docs"><p>Return true if there is at least one pair in hand frequency</p>
 </td><td class="codes"><pre class="brush: clojure">(defn pair?
-  [hand-values]
-  (not (empty? (pairs hand-values))))</pre></td></tr><tr><td class="docs"><p>Return true if the hand has two pairs</p>
+  [hand-freqs]
+  (not (empty? (pairs hand-freqs))))</pre></td></tr><tr><td class="docs"><p>Return true if the hand has two pairs in hand frequency</p>
 </td><td class="codes"><pre class="brush: clojure">(defn two-pair?
-  [hand-values]
-  (= (count (pairs hand-values)) 2))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr></table><div class="footer">Generated by <a href="https://github.com/fogus/marginalia">Marginalia</a>.&nbsp;&nbsp;Syntax highlighting provided by Alex Gorbatchev's <a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter</a></div><script type="text/javascript">SyntaxHighlighter.defaults['gutter'] = false;
+  [hand-freqs]
+  (= (count (pairs hand-freqs)) 2))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr></table><div class="footer">Generated by <a href="https://github.com/fogus/marginalia">Marginalia</a>.&nbsp;&nbsp;Syntax highlighting provided by Alex Gorbatchev's <a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter</a></div><script type="text/javascript">SyntaxHighlighter.defaults['gutter'] = false;
        SyntaxHighlighter.all()</script></body></html>
