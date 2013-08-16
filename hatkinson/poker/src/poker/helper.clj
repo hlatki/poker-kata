@@ -30,43 +30,47 @@
 
 ;; ## Of a Kind functions
 ;; These functions deal with finding pairs and seeing if a hand has
-;; four of a kind etc.
+;; four of a kind etc. Since the rank-hand function already calculates 
+;; the frequencies for a hand, these functions all take that as their input
+;; instead of recalculating it. 
 
 (defn n-of-a-kind
-  "Return frequencies matching n (e.g. if you had a hand with values
-  [5,5,6,8,4] and you were looking for pairs you would call (n-of-a-kind 2 [5,5,6,8,4])
+  "Return frequencies matching n given the frequencies of a hand 
+  (e.g. if you had a hand with values
+  [5,5,6,8,4] and you were looking for pairs you would call 
+  (n-of-a-kind 2 [[5 2] [6 1] [8 1] [4 1]])
   and would get [5 2] -- that is, there were two fives)"
-  [n hand-values]
-  (filter #(= (second %) n)
-          (frequencies hand-values)))
+  [n hand-freqs]
+  (filter #(= (second %) n) hand-freqs))
 
 (defn four-of-a-kind?
   "Return true if a hand has four of a kind"
-  [hand-values]
-  (not (empty? (n-of-a-kind 4 hand-values))))
+  [hand-freqs]
+  (not (empty? (n-of-a-kind 4 hand-freqs))))
 
 (defn three-of-a-kind?
   "Return true if a hand has three of a kind"
-  [hand-values]
-  (not (empty? (n-of-a-kind 3 hand-values))))
+  [hand-freqs]
+  (not (empty? (n-of-a-kind 3 hand-freqs))))
 
 ;; ### Pairs
 
 (defn pairs
-  "Return frequencies of pairs in a hand (e.g. with hand [5,5,7,7,2] you would get
+  "Return frequencies of pairs in a hand frequency 
+  (e.g. with hand [5,5,7,7,2] and hand-freq of [[5 2] [7 2] [2 1] ]you would get
   back ([5 2] [7 2])"
-  [hand-values]
-  (n-of-a-kind 2 hand-values))
+  [hand-freqs]
+  (n-of-a-kind 2 hand-freqs))
 
 (defn pair?
-  "Return true if there is at least one pair"
-  [hand-values]
-  (not (empty? (pairs hand-values))))
+  "Return true if there is at least one pair in hand frequency"
+  [hand-freqs]
+  (not (empty? (pairs hand-freqs))))
 
 (defn two-pair?
-  "Return true if the hand has two pairs"
-  [hand-values]
-  (= (count (pairs hand-values)) 2))
+  "Return true if the hand has two pairs in hand frequency"
+  [hand-freqs]
+  (= (count (pairs hand-freqs)) 2))
 
 
 

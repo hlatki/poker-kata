@@ -38,13 +38,13 @@
         freq   (frequencies values)]
     (cond
       (and (all-same-suit? suits) (consecutive? values))[STRAIGHT_FLUSH freq]
-      (four-of-a-kind? values)                          [FOUR_OF_A_KIND freq]
-      (and (three-of-a-kind? values) (pair? values))    [FULL_HOUSE freq]
+      (four-of-a-kind? freq)                            [FOUR_OF_A_KIND freq]
+      (and (three-of-a-kind? freq) (pair? freq))      [FULL_HOUSE freq]
       (all-same-suit? suits)                            [FLUSH freq]
       (consecutive? values)                             [STRAIGHT freq]
-      (three-of-a-kind? values)                         [THREE_OF_A_KIND freq]
-      (two-pair? values)                                [TWO_PAIR freq]
-      (pair? values)                                    [PAIR freq]
+      (three-of-a-kind? freq)                           [THREE_OF_A_KIND freq]
+      (two-pair? freq)                                  [TWO_PAIR freq]
+      (pair? freq)                                      [PAIR freq]
       :else                                             [HIGH_CARD freq])))
 
 (defn tie-breaker-freq
