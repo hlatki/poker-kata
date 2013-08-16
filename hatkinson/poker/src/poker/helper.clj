@@ -21,7 +21,7 @@
       hand-vals)))
 
 (defn all-same-suit?
-  "Given a sequence containg the suits in a hand,
+  "Given a sequence containing the suits in a hand,
   return true if all cards in a hand are the same suit"
   [hand-suits]
   (apply = hand-suits))
