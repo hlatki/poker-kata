@@ -7,8 +7,7 @@
 
 (defn consecutive?
   "Return true if a (sorted, descending) sequence of numbers is consecutive.
-  Note that this will only work for positive numbers (since there are no positive
-  numbers in poker)."
+  Note that this will only work for non-negative numbers."
   [hand-vals]
   (second
     (reduce
